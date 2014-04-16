@@ -2667,6 +2667,7 @@ int main(int argc, char *argv[]) {
                                 goto finish;
                         }
                 } else {
+#if 0
                         const char *p;
 
                         p = strappenda(arg_directory,
@@ -2676,6 +2677,7 @@ int main(int argc, char *argv[]) {
                                 goto finish;
 
                         }
+#endif
                 }
         } else {
                 char template[] = "/tmp/nspawn-root-XXXXXX";
