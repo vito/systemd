@@ -663,16 +663,25 @@ static int instance_from_socket(int fd, unsigned nr, char **instance) {
                 int k;
 
                 k = getpeercred(fd, &ucred);
-                if (k < 0)
+                if (k == -ENODATA) {
+                        /* This handles the case where somebody is
+                         * connecting from another pid/uid namespace
+                         * (e.g. from outside of our container). */
+                        if (asprintf(&r,
+                                     "%u-unknown",
+                                     nr) < 0)
+                                return -ENOMEM;
+                }
+                else if (k < 0)
                         return k;
-
-                if (asprintf(&r,
-                             "%u-%lu-%lu",
-                             nr,
-                             (unsigned long) ucred.pid,
-                             (unsigned long) ucred.uid) < 0)
-                        return -ENOMEM;
-
+                else {
+                        if (asprintf(&r,
+                                     "%u-%lu-%lu",
+                                     nr,
+                                     (unsigned long) ucred.pid,
+                                     (unsigned long) ucred.uid) < 0)
+                                return -ENOMEM;
+                }
                 break;
         }
 
