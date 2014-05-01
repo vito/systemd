@@ -285,7 +285,7 @@ int main(int argc, char *argv[]) {
 
         type = udev_device_get_property_value(udev_device, "ID_FS_TYPE");
         if (type) {
-                const char *checker = strappenda("/sbin/fsck.", type);
+                const char *checker = strappenda("/run/current-system/sw/sbin/fsck.", type);
                 r = access(checker, X_OK);
                 if (r < 0) {
                         if (errno == ENOENT) {
@@ -302,7 +302,7 @@ int main(int argc, char *argv[]) {
                         return EXIT_FAILURE;
                 }
 
-        cmdline[i++] = "/sbin/fsck";
+        cmdline[i++] = "/run/current-system/sw/sbin/fsck";
         cmdline[i++] = "-a";
         cmdline[i++] = "-T";
         cmdline[i++] = "-l";

@@ -48,7 +48,7 @@ int generator_write_fsck_deps(
                 const char *checker;
                 int r;
 
-                checker = strappenda("/sbin/fsck.", fstype);
+                checker = strappenda("/run/current-system/sw/sbin/fsck.", fstype);
                 r = access(checker, X_OK);
                 if (r < 0) {
                         log_warning("Checking was requested for %s, but %s cannot be used: %m", what, checker);
