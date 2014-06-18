@@ -1251,6 +1251,8 @@ static int socket_spawn(Socket *s, ExecCommand *c, pid_t *_pid) {
                        NULL,
                        s->exec_runtime,
                        &pid);
+        if (r < 0)
+                goto fail;
 
         strv_free(argv);
         if (r < 0)
