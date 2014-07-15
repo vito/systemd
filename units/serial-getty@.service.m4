@@ -24,7 +24,6 @@ IgnoreOnIsolate=yes
 [Service]
 Type=idle
 Restart=always
-RestartSec=0
 UtmpIdentifier=%I
 TTYPath=/dev/%I
 TTYReset=yes
