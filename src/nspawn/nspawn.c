@@ -3146,6 +3146,10 @@ int main(int argc, char *argv[]) {
 
                         if (!arg_quiet)
                                 log_info("Container %s is being rebooted.", arg_machine);
+                        if (getenv("EXIT_ON_REBOOT") != 0) {
+                                r = 10;
+                                break;
+                        }
                         continue;
                 } else if (status.si_code == CLD_KILLED ||
                            status.si_code == CLD_DUMPED) {
