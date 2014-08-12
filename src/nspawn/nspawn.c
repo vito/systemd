@@ -2756,8 +2756,6 @@ int main(int argc, char *argv[]) {
                 goto finish;
         }
 
-        sd_notify(0, "READY=1");
-
         assert_se(sigemptyset(&mask) == 0);
         sigset_add_many(&mask, SIGCHLD, SIGWINCH, SIGTERM, SIGINT, -1);
         assert_se(sigprocmask(SIG_BLOCK, &mask, NULL) == 0);
@@ -3095,6 +3093,8 @@ int main(int argc, char *argv[]) {
                 r = setup_macvlan(pid);
                 if (r < 0)
                         goto finish;
+
+                sd_notify(0, "READY=1");
 
                 /* Notify the child that the parent is ready with all
                  * its setup, and thtat the child can now hand over
