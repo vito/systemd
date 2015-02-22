@@ -23,11 +23,12 @@ IgnoreOnIsolate=yes
 # On systems without virtual consoles, don't start any getty. Note
 # that serial gettys are covered by serial-getty@.service, not this
 # unit.
-ConditionPathExists=/dev/tty0
+ConditionPathExists=|/dev/tty0
+ConditionVirtualization=|lxc
+ConditionVirtualization=|lxc-libvirt
 
 [Service]
 # the VT is cleared by TTYVTDisallocate
-ExecStart=-/sbin/agetty --noclear %I $TERM
 Type=idle
 Restart=always
 RestartSec=0

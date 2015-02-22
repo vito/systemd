@@ -650,9 +650,11 @@ static int manager_setup_notify(Manager *m) {
                 if (fd < 0)
                         return log_error_errno(errno, "Failed to allocate notification socket: %m");
 
-                if (m->running_as == SYSTEMD_SYSTEM)
+                if (m->running_as == SYSTEMD_SYSTEM) {
                         m->notify_socket = strdup("/run/systemd/notify");
-                else {
+                        if (!m->notify_socket)
+                                return log_oom();
+                } else {
                         const char *e;
 
                         e = getenv("XDG_RUNTIME_DIR");
@@ -662,9 +664,11 @@ static int manager_setup_notify(Manager *m) {
                         }
 
                         m->notify_socket = strappend(e, "/systemd/notify");
+                        if (!m->notify_socket)
+                                return log_oom();
+
+                        mkdir_parents_label(m->notify_socket, 0755);
                 }
-                if (!m->notify_socket)
-                        return log_oom();
 
                 (void) mkdir_parents_label(m->notify_socket, 0755);
                 (void) unlink(m->notify_socket);
